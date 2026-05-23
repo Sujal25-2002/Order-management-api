@@ -1,0 +1,199 @@
+{
+  "info": {
+    "name": "Order Management API",
+    "_postman_id": "f40710aa-2893-4a8c-b2db-c223569ac4f1",
+    "description": "Machine test collection for auth, order, and admin APIs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Sujal Sharma\",\n  \"email\": \"sujal@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/register",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "register"]
+        }
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"sujal@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "login"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "if (res.data && res.data.token) {",
+              "  pm.collectionVariables.set('token', res.data.token);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Admin@123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "login"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "if (res.data && res.data.token) {",
+              "  pm.collectionVariables.set('adminToken', res.data.token);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Order",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"symbol\": \"AAPL\",\n  \"order_type\": \"BUY\",\n  \"quantity\": 10,\n  \"price\": 182.50\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/create_order",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "orders", "create_order"]
+        }
+      }
+    },
+    {
+      "name": "Get My Orders",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/get_orders?page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "orders", "get_orders"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Order By ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/get_order_by_id/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "orders", "get_order_by_id", "1"]
+        }
+      }
+    },
+    {
+      "name": "Update Order",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"symbol\": \"AAPL\",\n  \"order_type\": \"SELL\",\n  \"quantity\": 5,\n  \"price\": 190.25,\n  \"status\": \"COMPLETED\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/update_order/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "orders", "update_order", "1"]
+        }
+      }
+    },
+    {
+      "name": "Delete Order",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/orders/delete_order/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "orders", "delete_order", "1"]
+        }
+      }
+    },
+    {
+      "name": "Admin Get All Orders",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/get_all_orders?page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "admin", "get_all_orders"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "token", "value": "" },
+    { "key": "adminToken", "value": "" }
+  ]
+}
