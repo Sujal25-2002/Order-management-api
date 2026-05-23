@@ -2,6 +2,7 @@ import { transformDates } from "./formatDate.js";
 
 function sendSuccess(response, statusCode, message, data = null, meta = null) {
   const payload = {
+    status: statusCode,
     success: true,
     message,
   };
