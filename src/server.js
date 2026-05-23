@@ -3,6 +3,7 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 
+import bootstrapDatabase from "./scripts/bootstrapDatabase.js";
 import env from "./config/env.js";
 import { testDatabaseConnection } from "./config/db.js";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
@@ -31,6 +32,7 @@ app.use(errorMiddleware);
 
 async function startServer() {
   try {
+    await bootstrapDatabase();
     await testDatabaseConnection();
     app.listen(env.port, () => {
       console.log(`Server listening on port ${env.port}`);

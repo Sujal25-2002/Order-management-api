@@ -318,4 +318,16 @@ The **Login** and **Admin Login** requests have test scripts that automatically 
 
 - New users always receive the `USER` role. Promote a user to `ADMIN` directly in the database or use the seeded admin account.
 - The `seed-admin.sql` password hash corresponds to `Admin@123` (bcrypt, 10 rounds).
+
+## Render Deployment
+
+This backend is ready for Render Blueprint deployment.
+
+1. Push this folder to its own GitHub repository.
+2. In Render, choose `New` -> `Blueprint`.
+3. Select the backend repository.
+4. Render will create:
+   - a free web service named `order-management-api`
+   - a free PostgreSQL database named `order-management-db`
+5. The app bootstraps the schema and admin seed automatically on startup.
 - Rate limiting is applied globally: 100 requests per IP per 15-minute window by default (configurable via `.env`).
