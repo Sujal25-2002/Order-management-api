@@ -14,7 +14,15 @@ import apiRoutes from "./routes/index.js";
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://order-management-frontend-ten.vercel.app/",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(morgan(env.nodeEnv === "production" ? "combined" : "dev"));
 app.use(apiRateLimiter);
